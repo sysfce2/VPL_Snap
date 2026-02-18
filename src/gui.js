@@ -473,7 +473,7 @@ IDE_Morph.prototype.openIn = function (world) {
         if (dict.embedMode) {
             myself.setEmbedMode();
         }
-        if (dict.editMode || this.config.noSprites) {
+        if (dict.editMode || myself.config.noSprites) {
             myself.toggleAppMode(false);
         } else {
             myself.toggleAppMode(true);
