@@ -44,6 +44,7 @@
         * new "blocks" and "speaker" symbols, icons for the sprite-editor tabs
         * new "hide empty categories" setting
         * added a black-gray-white palette to the bottom of the color picker for color input slots
+        * new "blocks only" setting for costomized "functions-first" microworlds
     * more extensions
         * Edge AI Computer Vision extension - thank you, Bernat!
         * new "Tables" extension for working with tabular data sets, modeled after Pyret's tables. Thanks, Shriram Krishnamurthi for your inspiration, feedback and advice!
@@ -98,6 +99,7 @@
 ### 2026-02-18
 * gui: added "Blocks only" setting to the "looks" menu - hides the stage and all sprite editing panes for custom "functions-first" microworlds
 * scenes, gui: made "hideSprites" a separate scene setting
+* store: persist "blocks only" setting in the project
 
 ### 2026-02-13
 * morphic: tweaked GrayPaletteMorph to allow easer selection of pure black / white colors
