@@ -87,7 +87,7 @@ HatBlockMorph, ZOOM*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.gui = '2026-Februars-18';
+modules.gui = '2026-Februars-24';
 
 // Declarations
 
@@ -1916,6 +1916,7 @@ IDE_Morph.prototype.refreshEmptyCategories = function () {
     dict.variables = dict.variables || dict.lists || dict.other;
     if (this.scene.hideEmptyCategories) {
         this.createCategories();
+        this.createPaletteHandle();
         this.fixLayout();
     }
     this.categories.buttons.forEach(cat => {
@@ -5160,6 +5161,7 @@ IDE_Morph.prototype.settingsMenu = function () {
         () => {
             this.scene.hideEmptyCategories = !this.scene.hideEmptyCategories;
             this.createCategories();
+            this.createPaletteHandle();
             this.fixLayout();
         },
         this.scene.hideEmptyCategories,

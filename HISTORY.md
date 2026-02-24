@@ -104,6 +104,7 @@
 * objects: speed-up for generated costumes, but now need to explicitly shrink-wrap them
 * updated the neural networks library with faster previews for ADTs
 * updated shapes library with math angles for rotation (instead of compass bearings) and preview speed-up
+* gui: fixed the palette handle when hiding empty categories
 
 ### 2026-02-21
 * morphic, blocks, byob: new "360° angles" dial widget for mathematical bearings (zero is East, counterclockwise) instead of compass bearings
