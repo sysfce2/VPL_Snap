@@ -162,7 +162,7 @@ CustomHatBlockMorph, GrayPaletteMorph, ZOOM*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.blocks = '2026-February-21';
+modules.blocks = '2026-February-25';
 
 var SyntaxElementMorph;
 var BlockMorph;
@@ -843,7 +843,7 @@ SyntaxElementMorph.prototype.labelParts = {
     },
     '%typ': {
         type: 'input',
-        tags: 'read-only static',
+        // tags: 'read-only static',
         menu: 'typesMenu'
     },
     '%mapValue': {

@@ -31,6 +31,7 @@
     * custom data types (ADTs)
         * include a ring entry named underscore + morph in data to specify a dynamic view
         * new "cst_morph(cst)" extension for specifying custom ADT visualizations
+        * include an entry named underscore + field in the data to specify a custom data type
     * domain-specific languages (DSL) support
         * support for dynamic dropdown menus and read-only settings in variadic input slots
         * support for variadic upvars in custom blocks
@@ -57,6 +58,8 @@
         * new help screens for "combinations" and
         * "pipe" reporters, thanks, Brian and gang!
 * **Notable Changes:**
+    * data types
+        * enhanced "is ... as ...?" predicate to support dependent data types and user defined structs (ADTs)
     * ui
         * keep result balloons "attached" to their originating block / script when scrolling
         * added icons to the IDE tabs (scripts, costumes, sounds)
@@ -101,6 +104,7 @@
 
 ### 2026-02-25
 * updated neural networks, tables and shapes libraries with new type annotation format (underscore-type string)
+* blocks, threads: changed "is ... a ... ?" predicate to support user defined structs (ADTs) and dependent data types
 
 ### 2026-02-24
 * extensions: new "cst_shrink-wrap(cst)" extension
