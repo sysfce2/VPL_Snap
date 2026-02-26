@@ -66,7 +66,7 @@ CustomHatBlockMorph*/
 
 /*jshint esversion: 11, bitwise: false, evil: true*/
 
-modules.threads = '2026-February-10';
+modules.threads = '2026-February-25';
 
 var ThreadManager;
 var Process;
@@ -4896,14 +4896,22 @@ Process.prototype.getLastMessage = function () {
 // Process type inference
 
 Process.prototype.reportIsA = function (thing, typeString) {
-    var choice = this.inputOption(typeString);
+    var choice = this.inputOption(typeString),
+        primType;
     switch (choice) {
     case 'agent':
         return isSnapObject(thing);
     case 'script':
         return thing instanceof Context;
     default:
-        return this.reportTypeOf(thing) === choice;
+        primType = this.reportTypeOf(thing);
+        return primType === choice || // support ADTs (user defined structs)
+            primType === 'list' &&
+                (this.reportListItem('_type', thing) === typeString ||
+                    this.reportIsA(
+                        this.reportListItem(['parent'], thing),
+                        typeString
+                    ));
     }
 };
 

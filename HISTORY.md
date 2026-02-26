@@ -31,12 +31,14 @@
     * custom data types (ADTs)
         * include a ring entry named underscore + morph in data to specify a dynamic view
         * new "cst_morph(cst)" extension for specifying custom ADT visualizations
+        * include an entry named underscore + field in the data to specify a custom data type
     * domain-specific languages (DSL) support
         * support for dynamic dropdown menus and read-only settings in variadic input slots
         * support for variadic upvars in custom blocks
         * new 'parameter' custom block input type, same as 'upvar', but doesn't add a script variable when evaluated, supports variadicity
         * support for dynamically setting the contents of expanded variadic upvars and input slots by a user script in the block definition
         * support for user-scriptable rename-menus in upvars, including variadic ones (a single menu is repeated in each non-unevaluated slot, a list of menu-lists whose first item is an empty list gets repeated across all subslots)
+        * new "360° angles" dial widget for mathematical bearings (zero is East, counterclockwise) instead of compass bearings
     * files
         * new general "dta_export(data, name, type)" extension (for csv, json, etc.)
         * new general "dta_import(raw?)" extension (for text files, csv, json etc.)
@@ -51,10 +53,13 @@
         * new reporter version of "let" in the variables declaration extension
         * new "... times ..." reporter in the neural networks library for quantifying results
         * new blocks to load costumes and sounds from a url in the web-services library, thanks, @ego-lay-atman-bay!
+        * new "cst_shrink-wrap(cst)" extension
     * new help screens
         * new help screens for "combinations" and
         * "pipe" reporters, thanks, Brian and gang!
 * **Notable Changes:**
+    * data types
+        * enhanced "is ... as ...?" predicate to support dependent data types and user defined structs (ADTs)
     * ui
         * keep result balloons "attached" to their originating block / script when scrolling
         * added icons to the IDE tabs (scripts, costumes, sounds)
@@ -96,6 +101,21 @@
     * Chinese, thank you, @Ayist14 !
     * Catalan, thanks, Joan!
     * German
+
+### 2026-02-25
+* updated neural networks, tables and shapes libraries with new type annotation format (underscore-type string)
+* blocks, threads: changed "is ... a ... ?" predicate to support user defined structs (ADTs) and dependent data types
+
+### 2026-02-24
+* extensions: new "cst_shrink-wrap(cst)" extension
+* objects: speed-up for generated costumes, but now need to explicitly shrink-wrap them
+* updated the neural networks library with faster previews for ADTs
+* updated shapes library with math angles for rotation (instead of compass bearings) and preview speed-up
+* gui: fixed the palette handle when hiding empty categories
+* updated the shapes library with a new "scale ... by x: ... y: ..." block
+
+### 2026-02-21
+* morphic, blocks, byob: new "360° angles" dial widget for mathematical bearings (zero is East, counterclockwise) instead of compass bearings
 
 ### 2026-02-18
 * gui: added "Blocks only" setting to the "looks" menu - hides the stage and all sprite editing panes for custom "functions-first" microworlds
