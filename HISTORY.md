@@ -104,6 +104,9 @@
     * Catalan, thanks, Joan!
     * German
 
+### 2026-02-27
+* threads: metaprogramming support for the ADT slot
+
 ### 2026-02-26
 * blocks, byob, store: new ADT type input slot
 * blocks, byob, store: added optional type annotations and strict typing to blocks and custom blocks
