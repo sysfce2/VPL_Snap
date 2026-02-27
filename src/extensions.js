@@ -32,11 +32,11 @@ IDE_Morph, CamSnapshotDialogMorph, SoundRecorderDialogMorph, isSnapObject, nop,
 Color, Process, contains, localize, SnapTranslator, isString, detect, Point,
 SVG_Costume, newCanvas, WatcherMorph, BlockMorph, HatBlockMorph, invoke, isNil,
 BigUint64Array, DeviceOrientationEvent, DialogBoxMorph, Animation, TableMorph,
-TableFrameMorph, console, Morph*/
+TableFrameMorph, console, Morph, MenuMorph*/
 
 /*jshint esversion: 11, bitwise: false*/
 
-modules.extensions = '2026-February-24';
+modules.extensions = '2026-February-27';
 
 // Global stuff
 
@@ -1423,6 +1423,22 @@ SnapExtensions.primitives.set(
         m.bounds.setWidth(img.width);
         m.bounds.setHeight(img.height);
         m.cachedImage = img;
+        m.isCustomSwatch = true;
+
+        // support exporting costumes directly from speech balloons:
+        m.userMenu = function () {
+            var menu = new MenuMorph(this),
+                ide = this.parentThatIsA(IDE_Morph)||
+                    this.world().childThatIsA(IDE_Morph);
+
+            if (ide.isAppMode) {return; }
+            menu.addItem(
+                'export',
+                () => ide.saveCanvasAs(img, costume.name || 'image')
+            );
+            return menu;
+        };
+
         return m;
     }
 );

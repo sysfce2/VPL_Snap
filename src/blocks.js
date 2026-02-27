@@ -164,7 +164,7 @@ CustomHatBlockMorph, GrayPaletteMorph, ZOOM*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.blocks = '2026-February-26';
+modules.blocks = '2026-February-27';
 
 var SyntaxElementMorph;
 var BlockMorph;
@@ -2634,6 +2634,8 @@ SyntaxElementMorph.prototype.showBubble = function (value, exportPic, target) {
                     this.changed();
                 }
             };
+        } else if (value.isCustomSwatch) {
+            morphToShow = value;
         } else {
             img = value.fullImage();
             morphToShow = new Morph();
