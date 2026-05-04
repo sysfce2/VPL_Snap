@@ -124,6 +124,7 @@
 
 ### 2026-05-04
 * fixed an occasional race-condition with the open-file dialog, thanks, Michael Aschauer!
+* v12 beta 260504
 
 ### 2026-04-30
 * morphic, store: new World>>once mechanism for dynamic scheduling used to load projects and apply settings
