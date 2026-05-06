@@ -124,6 +124,7 @@
 
 ### 2026-05-06
 * optimized layout/composition speed for the shapes library
+* v12 beta 260506
 
 ### 2026-05-04
 * fixed an occasional race-condition with the open-file dialog, thanks, Michael Aschauer!
