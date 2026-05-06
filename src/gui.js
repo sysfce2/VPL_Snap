@@ -4623,7 +4623,6 @@ IDE_Morph.prototype.settingsMenu = function () {
             'rectangle',
             MorphicPreferences.menuFontSize * 0.75
         );
-
     function addPreference(label, toggle, test, onHint, offHint, hide) {
         if (!hide || shiftClicked) {
             menu.addItem(
@@ -4637,7 +4636,6 @@ IDE_Morph.prototype.settingsMenu = function () {
             );
         }
     }
-
     function addPreferenceMenu(label, test, submenu) {
         menu.addMenu(
             [
@@ -4647,7 +4645,6 @@ IDE_Morph.prototype.settingsMenu = function () {
             submenu
         );
     }
-
     function addSubPreference(label, toggle, test, onHint, offHint, hide) {
         if (!hide || shiftClicked) {
             menu.addItem(
@@ -4661,7 +4658,6 @@ IDE_Morph.prototype.settingsMenu = function () {
             );
         }
     }
-
     menu = new MenuMorph(this);
     menu.addMenu(
         [
@@ -4673,91 +4669,38 @@ IDE_Morph.prototype.settingsMenu = function () {
         ],
         this.languageMenu()
     );
-    menu.addItem(localize(
-        'Magnification') + '...',
-        'userZoom'
-    );
     menu.addMenu(
         localize('Looks') + '...',
         this.looksMenu()
     );
-    menu.addItem(
-        'Stage size...',
-        'userSetStageSize'
-    );
-    if (shiftClicked) {
-        menu.addItem(
-            'Dragging threshold...',
-            'userSetDragThreshold',
-            'specify the distance the hand has to move\n' +
-                'before it picks up an object',
-            new Color(100, 0, 0)
-        );
-    }
     menu.addMenu(
-        'Microphone resolution...',
-        this.microphoneMenu()
+        localize('Project settings') + '...',
+        this.projectSettingsMenu()
     );
     menu.addLine();
-    if (shiftClicked) {
-        menu.addItem(
-            'Primitives palette',
-            () => this.stage.restorePrimitives(),
-            'EXPERIMENTAL - switch (back) to\n' +
-                'primitive blocks in the palette',
-            new Color(100, 0, 0)
-        );
-        menu.addItem(
-            'Customize primitives',
-            () => this.stage.customizeBlocks(),
-            'EXPERIMENTAL - overload primitives\n' +
-                'with custom block definitions',
-            new Color(100, 0, 0)
-        );
-        menu.addLine();
-        addPreference(
-            'Blocks all the way',
-            () => {
-                if (SpriteMorph.prototype.isBlocksAllTheWay()) {
-                    this.stage.restorePrimitives();
-                } else {
-                    this.bootstrapCustomizedPrimitives(
-                        this.stage.customizeBlocks()
-                    );
-                }
-            },
-            SpriteMorph.prototype.isBlocksAllTheWay(),
-            'uncheck to disable editing primitives\n' +
-                'in the palette as custom blocks',
-            'check to edit primitives\nin the palette as custom blocks',
-            new Color(100, 0, 0)
-
-        );
-        if (SpriteMorph.prototype.hasCustomizedPrimitives()) {
-            menu.addItem(
-                'Use custom blocks',
-                () => SpriteMorph.prototype.toggleAllCustomizedPrimitives(
-                    this.stage,
-                    false
-                ),
-                'EXPERIMENTAL - use custom blocks\n' +
-                    'in all palette blocks',
-                new Color(100, 0, 0)
-            );
-            menu.addItem(
-                'Use primitives',
-                () => SpriteMorph.prototype.toggleAllCustomizedPrimitives(
-                    this.stage,
-                    true
-                ),
-                'EXPERIMENTAL - use primitives\n' +
-                    'in all palette blocks',
-                new Color(100, 0, 0)
-            );
-            menu.addLine();
-        }
-    }
     addPreference(
+        'Turbo mode',
+        'toggleFastTracking',
+        this.stage.isFastTracked,
+        'uncheck to run scripts\nat normal speed',
+        'check to prioritize\nscript execution'
+    );
+    addPreference(
+        'Performer mode',
+        () => this.togglePerformerMode(),
+        this.performerMode,
+        'uncheck to go back to regular\nlayout',
+        'check to have the stage use up\nall space and go behind the\n' +
+        'scripting area'
+    );
+    if (this.performerMode) {
+        menu.addItem(
+            'Performer mode scale...',
+            'userSetPerformerModeScale',
+            'specify the scale of the stage\npixels in performer mode'
+        );
+    }
+        addPreference(
         'JavaScript extensions',
         () => {
             /*
@@ -4794,26 +4737,6 @@ IDE_Morph.prototype.settingsMenu = function () {
         'uncheck to hide extension\nprimitives in the palette',
         'check to show extension\nprimitives in the palette'
     );
-    /*
-    addPreference(
-        'Add scenes',
-        () => this.isAddingScenes = !this.isAddingScenes,
-        this.isAddingScenes,
-        'uncheck to replace the current project,\nwith a new one',
-        'check to add other projects,\nto this one',
-        true
-    );
-    */
-    if (isRetinaSupported()) {
-        addPreference(
-            'Retina display support',
-            'toggleRetina',
-            isRetinaEnabled(),
-            'uncheck for lower resolution,\nsaves computing resources',
-            'check for higher resolution,\nuses more computing resources',
-            true
-        );
-    }
     addPreference(
         'Input sliders',
         'toggleInputSliders',
@@ -4831,27 +4754,11 @@ IDE_Morph.prototype.settingsMenu = function () {
         );
     }
     addPreference(
-        'Turbo mode',
-        'toggleFastTracking',
-        this.stage.isFastTracked,
-        'uncheck to run scripts\nat normal speed',
-        'check to prioritize\nscript execution'
-    );
-    addPreference(
         'Visible stepping',
         'toggleSingleStepping',
         Process.prototype.enableSingleStepping,
         'uncheck to turn off\nvisible stepping',
         'check to turn on\n visible stepping (slow)',
-        false
-    );
-    addPreference(
-        'Log pen vectors',
-        () => StageMorph.prototype.enablePenLogging =
-            !StageMorph.prototype.enablePenLogging,
-        StageMorph.prototype.enablePenLogging,
-        'uncheck to turn off\nlogging pen vectors',
-        'check to turn on\nlogging pen vectors',
         false
     );
     addPreference(
@@ -4863,15 +4770,120 @@ IDE_Morph.prototype.settingsMenu = function () {
         'check to distinguish upper- and\n lowercase when comparing texts',
         false
     );
-    addPreference(
-        'Ternary Boolean slots',
-        () => BooleanSlotMorph.prototype.isTernary =
-            !BooleanSlotMorph.prototype.isTernary,
-        BooleanSlotMorph.prototype.isTernary,
-        'uncheck to limit\nBoolean slots to true / false',
-        'check to allow\nempty Boolean slots',
-        true
+    menu.addMenu(
+        'Microphone resolution...',
+        this.microphoneMenu()
     );
+    menu.addLine();
+    if (this.scene.role !== 'tutorial') {
+        addPreference(
+            'Template',
+            () => this.scene.role = this.scene.role === 'template' ?
+                null : 'template',
+            this.scene.role === 'template',
+            'uncheck to save this\nscene regularly',
+            'check to turn this scene into an uneditable\ntemplate when saving it'
+        );
+    }
+    if (this.scene.role !== 'template') {
+        addPreference(
+            'Tutorial',
+            () => this.scene.role = this.scene.role === 'tutorial' ?
+                null : 'tutorial',
+            this.scene.role === 'tutorial',
+            'uncheck to treat this\nscene regularly',
+            'check to turn this scene\ninto a tutorial'
+        );
+    }
+    if ((this.scene.role === 'template' || this.scene.template.hide) &&
+        this.scene.role !== 'tutorial'
+    ) {
+        addPreferenceMenu(
+            'Include settings',
+            this.scene.hasEmbeddedTemplateSettings(),
+            this.templateSettingsMenu()
+        );
+    }
+    if (shiftClicked) {
+        menu.addLine();
+    }
+    addPreference(
+        'Blocks all the way',
+        () => {
+            if (SpriteMorph.prototype.isBlocksAllTheWay()) {
+                this.stage.restorePrimitives();
+            } else {
+                this.bootstrapCustomizedPrimitives(
+                    this.stage.customizeBlocks()
+                );
+            }
+        },
+        SpriteMorph.prototype.isBlocksAllTheWay(),
+        'uncheck to disable editing primitives\n' +
+            'in the palette as custom blocks',
+        'check to edit primitives\nin the palette as custom blocks',
+        new Color(100, 0, 0)
+    );
+    if (SpriteMorph.prototype.hasCustomizedPrimitives()) {
+        menu.addItem(
+            'Use custom blocks',
+            () => SpriteMorph.prototype.toggleAllCustomizedPrimitives(
+                this.stage,
+                false
+            ),
+            'EXPERIMENTAL - use custom blocks\n' +
+                'in all palette blocks',
+            new Color(100, 0, 0)
+        );
+        menu.addItem(
+            'Use primitives',
+            () => SpriteMorph.prototype.toggleAllCustomizedPrimitives(
+                this.stage,
+                true
+            ),
+            'EXPERIMENTAL - use primitives\n' +
+                'in all palette blocks',
+            new Color(100, 0, 0)
+        );
+    }
+    if (shiftClicked) {
+        menu.addItem(
+            'Primitives palette',
+            () => this.stage.restorePrimitives(),
+            'EXPERIMENTAL - switch (back) to\n' +
+                'primitive blocks in the palette',
+            new Color(100, 0, 0)
+        );
+        menu.addItem(
+            'Customize primitives',
+            () => this.stage.customizeBlocks(),
+            'EXPERIMENTAL - overload primitives\n' +
+                'with custom block definitions',
+            new Color(100, 0, 0)
+        );
+    }
+    if (shiftClicked) {
+        menu.addLine();
+    }
+    if (shiftClicked) {
+        menu.addItem(
+            'Dragging threshold...',
+            'userSetDragThreshold',
+            'specify the distance the hand has to move\n' +
+                'before it picks up an object',
+            new Color(100, 0, 0)
+        );
+    }
+    if (isRetinaSupported()) {
+        addPreference(
+            'Retina display support',
+            'toggleRetina',
+            isRetinaEnabled(),
+            'uncheck for lower resolution,\nsaves computing resources',
+            'check for higher resolution,\nuses more computing resources',
+            true
+        );
+    }
     addPreference(
         'Camera support',
         'toggleCameraSupport',
@@ -4896,32 +4908,6 @@ IDE_Morph.prototype.settingsMenu = function () {
         StageMorph.prototype.enableQuicksteps,
         'uncheck to schedule\nthreads framewise',
         'check to quickstep\nthreads atomically',
-        true
-    );
-    addPreference(
-        'Performer mode',
-        () => this.togglePerformerMode(),
-        this.performerMode,
-        'uncheck to go back to regular\nlayout',
-        'check to have the stage use up\nall space and go behind the\n' +
-        'scripting area'
-    );
-    if (this.performerMode) {
-        menu.addItem(
-            'Performer mode scale...',
-            'userSetPerformerModeScale',
-            'specify the scale of the stage\npixels in performer mode'
-        );
-    }
-    if (shiftClicked) {
-        menu.addLine(); // everything visible below is currently hidden
-    }
-    addPreference(
-        'Blurred shadows',
-        'toggleBlurredShadows',
-        useBlurredShadows,
-        'uncheck to use solid drop\nshadows and highlights',
-        'check to use blurred drop\nshadows and highlights',
         true
     );
     addPreference(
@@ -4970,31 +4956,6 @@ IDE_Morph.prototype.settingsMenu = function () {
     );
     */
     addPreference(
-        'Rasterize SVGs',
-        () => MorphicPreferences.rasterizeSVGs =
-            !MorphicPreferences.rasterizeSVGs,
-        MorphicPreferences.rasterizeSVGs,
-        'uncheck for smooth\nscaling of vector costumes',
-        'check to rasterize\nSVGs on import',
-        true
-    );
-    addPreference(
-        'Nested auto-wrapping',
-        () => {
-            ScriptsMorph.prototype.enableNestedAutoWrapping =
-                !ScriptsMorph.prototype.enableNestedAutoWrapping;
-            if (ScriptsMorph.prototype.enableNestedAutoWrapping) {
-                this.removeSetting('autowrapping');
-            } else {
-                this.saveSetting('autowrapping', false);
-            }
-        },
-        ScriptsMorph.prototype.enableNestedAutoWrapping,
-        'uncheck to confine auto-wrapping\nto top-level block stacks',
-        'check to enable auto-wrapping\ninside nested block stacks',
-        true
-    );
-    addPreference(
         'Sprite Nesting',
         () => SpriteMorph.prototype.enableNesting =
             !SpriteMorph.prototype.enableNesting,
@@ -5018,56 +4979,23 @@ IDE_Morph.prototype.settingsMenu = function () {
         true
     );
     addPreference(
-        'Keyboard Editing',
-        () => {
-            ScriptsMorph.prototype.enableKeyboard =
-                !ScriptsMorph.prototype.enableKeyboard;
-            this.currentSprite.scripts.updateToolbar();
-            if (ScriptsMorph.prototype.enableKeyboard) {
-                this.removeSetting('keyboard');
-            } else {
-                this.saveSetting('keyboard', false);
-            }
-        },
-        ScriptsMorph.prototype.enableKeyboard,
-        'uncheck to disable\nkeyboard editing support',
-        'check to enable\nkeyboard editing support',
+        'Enable command drops in all rings',
+        () => RingReporterSlotMorph.prototype.enableCommandDrops =
+            !RingReporterSlotMorph.prototype.enableCommandDrops,
+        RingReporterSlotMorph.prototype.enableCommandDrops,
+        'uncheck to disable\ndropping commands in reporter rings',
+        'check to enable\ndropping commands in all rings',
         true
     );
     addPreference(
-        'Table support',
-        () => {
-            List.prototype.enableTables =
-                !List.prototype.enableTables;
-            if (List.prototype.enableTables) {
-                this.removeSetting('tables');
-            } else {
-                this.saveSetting('tables', false);
-            }
-        },
-        List.prototype.enableTables,
-        'uncheck to disable\nmulti-column list views',
-        'check for multi-column\nlist view support',
+        'Rasterize SVGs',
+        () => MorphicPreferences.rasterizeSVGs =
+            !MorphicPreferences.rasterizeSVGs,
+        MorphicPreferences.rasterizeSVGs,
+        'uncheck for smooth\nscaling of vector costumes',
+        'check to rasterize\nSVGs on import',
         true
     );
-    if (List.prototype.enableTables) {
-        addPreference(
-            'Table lines',
-            () => {
-                TableMorph.prototype.highContrast =
-                    !TableMorph.prototype.highContrast;
-                if (TableMorph.prototype.highContrast) {
-                    this.saveSetting('tableLines', true);
-                } else {
-                    this.removeSetting('tableLines');
-                }
-            },
-            TableMorph.prototype.highContrast,
-            'uncheck for less contrast\nmulti-column list views',
-            'check for higher contrast\ntable views',
-            true
-        );
-    }
     addPreference(
         'Live coding support',
         () => Process.prototype.enableLiveCoding =
@@ -5091,105 +5019,6 @@ IDE_Morph.prototype.settingsMenu = function () {
         'EXPERIMENTAL! check to enable\nsupport for compiling',
         true
     );
-    menu.addLine(); // everything below this line is stored in the project
-    addPreference(
-        'Thread safe scripts',
-        () => stage.isThreadSafe = !stage.isThreadSafe,
-        this.stage.isThreadSafe,
-        'uncheck to allow\nscript reentrance',
-        'check to disallow\nscript reentrance'
-    );
-    addPreference(
-        'Flat line ends',
-        () => SpriteMorph.prototype.useFlatLineEnds =
-            !SpriteMorph.prototype.useFlatLineEnds,
-        SpriteMorph.prototype.useFlatLineEnds,
-        'uncheck for round ends of lines',
-        'check for flat ends of lines'
-    );
-    addPreference(
-        'Codification support',
-        () => {
-            StageMorph.prototype.enableCodeMapping =
-                !StageMorph.prototype.enableCodeMapping;
-            this.flushBlocksCache('variables');
-            this.refreshPalette();
-            this.refreshEmptyCategories();
-        },
-        StageMorph.prototype.enableCodeMapping,
-        'uncheck to disable\nblock to text mapping features',
-        'check for block\nto text mapping features',
-        false
-    );
-    addPreference(
-        'Inheritance support',
-        () => {
-            StageMorph.prototype.enableInheritance =
-                !StageMorph.prototype.enableInheritance;
-            this.flushBlocksCache('variables');
-            this.refreshPalette();
-            this.refreshEmptyCategories();
-        },
-        StageMorph.prototype.enableInheritance,
-        'uncheck to disable\nsprite inheritance features',
-        'check for sprite\ninheritance features',
-        true
-    );
-    addPreference(
-        'Hyper blocks support',
-        () => Process.prototype.enableHyperOps =
-            !Process.prototype.enableHyperOps,
-        Process.prototype.enableHyperOps,
-        'uncheck to disable\nusing operators on lists and tables',
-        'check to enable\nusing operators on lists and tables',
-        true
-    );
-    addPreference(
-        'Single palette',
-        () => this.toggleUnifiedPalette(),
-        this.scene.unifiedPalette,
-        'uncheck to show only the selected category\'s blocks',
-        'check to show all blocks in a single palette',
-        false
-    );
-    if (this.scene.unifiedPalette) {
-        addSubPreference(
-            'Show categories',
-            () => this.toggleCategoryNames(),
-            this.scene.showCategories,
-            'uncheck to hide\ncategory names\nin the palette',
-            'check to show\ncategory names\nin the palette'
-        );
-        addSubPreference(
-            'Show buttons',
-            () => this.togglePaletteButtons(),
-            this.scene.showPaletteButtons,
-            'uncheck to hide buttons\nin the palette',
-            'check to show buttons\nin the palette'
-        );
-    }
-    addPreference(
-        'Hide empty categories',
-        () => {
-            this.scene.hideEmptyCategories = !this.scene.hideEmptyCategories;
-            this.createCategories();
-            this.createPaletteHandle();
-            this.fixLayout();
-        },
-        this.scene.hideEmptyCategories,
-        'uncheck to show all primitive block categories',
-        'check to hide empty primitive block categories',
-        false
-    );
-    addPreference(
-        'Enforce input types',
-        () => ScriptsMorph.prototype.enforceTypes =
-            !ScriptsMorph.prototype.enforceTypes,
-        ScriptsMorph.prototype.enforceTypes,
-        'uncheck to allow\ndropping reporters\ninto unmatching slots',
-        'disable dropping reporters\ninto unmatching slots',
-        false
-    );
     addPreference(
         'Wrap list indices',
         () => {
@@ -5201,86 +5030,6 @@ IDE_Morph.prototype.settingsMenu = function () {
         'check for wrapping\nlist indices',
         true
     );
-    addPreference(
-        'Persist linked sublist IDs',
-        () => StageMorph.prototype.enableSublistIDs =
-            !StageMorph.prototype.enableSublistIDs,
-        StageMorph.prototype.enableSublistIDs,
-        'uncheck to disable\nsaving linked sublist identities',
-        'check to enable\nsaving linked sublist identities',
-        true
-    );
-    addPreference(
-        'Enable command drops in all rings',
-        () => RingReporterSlotMorph.prototype.enableCommandDrops =
-            !RingReporterSlotMorph.prototype.enableCommandDrops,
-        RingReporterSlotMorph.prototype.enableCommandDrops,
-        'uncheck to disable\ndropping commands in reporter rings',
-        'check to enable\ndropping commands in all rings',
-        true
-    );
-
-    addPreference(
-        'HSL pen color model',
-        () => {
-            SpriteMorph.prototype.penColorModel =
-                SpriteMorph.prototype.penColorModel === 'hsl' ? 'hsv' : 'hsl';
-            this.refreshIDE();
-        },
-        SpriteMorph.prototype.penColorModel === 'hsl',
-        'uncheck to switch pen colors\nand graphic effects to HSV',
-        'check to switch pen colors\nand graphic effects to HSL',
-        false
-    );
-
-    addPreference(
-        'Disable click-to-run',
-        () => ThreadManager.prototype.disableClickToRun =
-            !ThreadManager.prototype.disableClickToRun,
-        ThreadManager.prototype.disableClickToRun,
-        'uncheck to enable\ndirectly running blocks\nby clicking on them',
-        'check to disable\ndirectly running blocks\nby clicking on them',
-        false
-    );
-    addPreference(
-        'Disable dragging data',
-        () => SpriteMorph.prototype.disableDraggingData =
-            !SpriteMorph.prototype.disableDraggingData,
-        SpriteMorph.prototype.disableDraggingData,
-        'uncheck to drag media\nand blocks out of\nwatchers and balloons',
-        'disable dragging media\nand blocks out of\nwatchers and balloons',
-        false
-    );
-    menu.addLine(); // templates and tutorial settings stored in the project
-    if (this.scene.role !== 'tutorial') {
-        addPreference(
-            'Template',
-            () => this.scene.role = this.scene.role === 'template' ?
-                null : 'template',
-            this.scene.role === 'template',
-            'uncheck to save this\nscene regularly',
-            'check to turn this scene into an uneditable\ntemplate when saving it'
-        );
-    }
-    if (this.scene.role !== 'template') {
-        addPreference(
-            'Tutorial',
-            () => this.scene.role = this.scene.role === 'tutorial' ?
-                null : 'tutorial',
-            this.scene.role === 'tutorial',
-            'uncheck to treat this\nscene regularly',
-            'check to turn this scene\ninto a tutorial'
-        );
-    }
-    if ((this.scene.role === 'template' || this.scene.template.hide) &&
-        this.scene.role !== 'tutorial'
-    ) {
-        addPreferenceMenu(
-            'Include settings',
-            this.scene.hasEmbeddedTemplateSettings(),
-            this.templateSettingsMenu()
-        );
-    }
     menu.popup(world, pos);
 };
 
@@ -8337,7 +8086,6 @@ IDE_Morph.prototype.looksMenu = function () {
             'rectangle',
             MorphicPreferences.menuFontSize * 0.75
         );
-
     menu.addPreference = function (label, toggle, test, onHint, offHint, hide) {
         if (!hide || shiftClicked) {
             menu.addItem(
@@ -8351,9 +8099,7 @@ IDE_Morph.prototype.looksMenu = function () {
             );
         }
     };
-
     empty.render = nop;
-
     menu.addItem(
         [
             MorphicPreferences.isFlat || IDE_Morph.prototype.isBright ? empty
@@ -8370,7 +8116,6 @@ IDE_Morph.prototype.looksMenu = function () {
         ],
         this.flatBrightLooks
     );
-    menu.addLine();
     menu.addPreference(
         'Flat design',
         () => {
@@ -8398,9 +8143,12 @@ IDE_Morph.prototype.looksMenu = function () {
         false
     );
     menu.addLine();
-    menu.addItem('Fade blocks...', 'userFadeBlocks');
-    menu.addItem('Afterglow blocks...', 'userSetBlocksAfterglow');
+    menu.addItem(localize(
+        'Magnification') + '...',
+        'userZoom'
+    );
     menu.addItem('Zoom blocks...', 'userSetBlocksScale');
+    menu.addItem('Fade blocks...', 'userFadeBlocks');
     menu.addLine();
     menu.addPreference(
         'Long form input dialog',
@@ -8408,13 +8156,6 @@ IDE_Morph.prototype.looksMenu = function () {
         InputSlotDialogMorph.prototype.isLaunchingExpanded,
         'uncheck to use the input\ndialog in short form',
         'check to always show slot\ntypes in the input dialog'
-    );
-    menu.addPreference(
-        'Plain prototype labels',
-        'togglePlainPrototypeLabels',
-        BlockLabelPlaceHolderMorph.prototype.plainLabel,
-        'uncheck to always show (+) symbols\nin block prototype labels',
-        'check to hide (+) symbols\nin block prototype labels'
     );
     menu.addPreference(
         'Clicking sound',
@@ -8430,12 +8171,302 @@ IDE_Morph.prototype.looksMenu = function () {
         'uncheck to turn\nblock clicking\nsound off',
         'check to turn\nblock clicking\nsound on'
     );
+    if (shiftClicked) {
+        menu.addLine();
+    }
+    if (shiftClicked) {
+        menu.addItem('Afterglow blocks...',
+            'userSetBlocksAfterglow',
+            null,
+            new Color(100, 0, 0)
+        );
+    }
+    menu.addPreference(
+        'Blurred shadows',
+        'toggleBlurredShadows',
+        useBlurredShadows,
+        'uncheck to use solid drop\nshadows and highlights',
+        'check to use blurred drop\nshadows and highlights',
+        true
+    );
+    menu.addPreference(
+        'Nested auto-wrapping',
+        () => {
+            ScriptsMorph.prototype.enableNestedAutoWrapping =
+                !ScriptsMorph.prototype.enableNestedAutoWrapping;
+            if (ScriptsMorph.prototype.enableNestedAutoWrapping) {
+                this.removeSetting('autowrapping');
+            } else {
+                this.saveSetting('autowrapping', false);
+            }
+        },
+        ScriptsMorph.prototype.enableNestedAutoWrapping,
+        'uncheck to confine auto-wrapping\nto top-level block stacks',
+        'check to enable auto-wrapping\ninside nested block stacks',
+        true
+    );
+    menu.addPreference(
+        'Keyboard Editing',
+        () => {
+            ScriptsMorph.prototype.enableKeyboard =
+                !ScriptsMorph.prototype.enableKeyboard;
+            this.currentSprite.scripts.updateToolbar();
+            if (ScriptsMorph.prototype.enableKeyboard) {
+                this.removeSetting('keyboard');
+            } else {
+                this.saveSetting('keyboard', false);
+            }
+        },
+        ScriptsMorph.prototype.enableKeyboard,
+        'uncheck to disable\nkeyboard editing support',
+        'check to enable\nkeyboard editing support',
+        true
+    );
+    menu.addPreference(
+        'Table support',
+        () => {
+            List.prototype.enableTables =
+                !List.prototype.enableTables;
+            if (List.prototype.enableTables) {
+                this.removeSetting('tables');
+            } else {
+                this.saveSetting('tables', false);
+            }
+        },
+        List.prototype.enableTables,
+        'uncheck to disable\nmulti-column list views',
+        'check for multi-column\nlist view support',
+        true
+    );
+    if (List.prototype.enableTables) {
+        menu.addPreference(
+            'Table lines',
+            () => {
+                TableMorph.prototype.highContrast =
+                    !TableMorph.prototype.highContrast;
+                if (TableMorph.prototype.highContrast) {
+                    this.saveSetting('tableLines', true);
+                } else {
+                    this.removeSetting('tableLines');
+                }
+            },
+            TableMorph.prototype.highContrast,
+            'uncheck for less contrast\nmulti-column list views',
+            'check for higher contrast\ntable views',
+            true
+        );
+    }
+    menu.addPreference(
+        'Plain prototype labels',
+        'togglePlainPrototypeLabels',
+        BlockLabelPlaceHolderMorph.prototype.plainLabel,
+        'uncheck to always show (+) symbols\nin block prototype labels',
+        'check to hide (+) symbols\nin block prototype labels',
+        true
+    );
+    return menu;
+};
+
+IDE_Morph.prototype.projectSettingsMenu = function () {
+    var menu = new MenuMorph(this),
+        world = this.world(),
+        shiftClicked = (world.currentKey === 16),
+        tick = new SymbolMorph(
+            'tick',
+            MorphicPreferences.menuFontSize * 0.75
+        ),
+        empty = tick.fullCopy(),
+        on = new SymbolMorph(
+            'checkedBox',
+            MorphicPreferences.menuFontSize * 0.75
+        ),
+        off = new SymbolMorph(
+            'rectangle',
+            MorphicPreferences.menuFontSize * 0.75
+        );
+    menu.addPreference = function (label, toggle, test, onHint, offHint, hide) {
+        if (!hide || shiftClicked) {
+            menu.addItem(
+                [
+                    (test? on : off),
+                    localize(label)
+                ],
+                toggle,
+                test ? onHint : offHint,
+                hide ? new Color(100, 0, 0) : null
+            );
+        }
+    };
+    empty.render = nop;
+    menu.addItem(
+        'Stage size...',
+        'userSetStageSize'
+    );
     menu.addPreference(
         'Blocks only',
         () => this.hideSpritePanes(!this.scene.hideSprites),
         this.scene.hideSprites,
         'uncheck to show\nthe stage and\nsprite editor panes',
         'check to hide\nthe stage and \nsprite editor panes'
+    );
+    menu.addPreference(
+        'Single palette',
+        () => this.toggleUnifiedPalette(),
+        this.scene.unifiedPalette,
+        'uncheck to show only the selected category\'s blocks',
+        'check to show all blocks in a single palette',
+        false
+    );
+    if (this.scene.unifiedPalette) {
+        menu.addSubPreference(
+            'Show categories',
+            () => this.toggleCategoryNames(),
+            this.scene.showCategories,
+            'uncheck to hide\ncategory names\nin the palette',
+            'check to show\ncategory names\nin the palette'
+        );
+        menu.addSubPreference(
+            'Show buttons',
+            () => this.togglePaletteButtons(),
+            this.scene.showPaletteButtons,
+            'uncheck to hide buttons\nin the palette',
+            'check to show buttons\nin the palette'
+        );
+    }
+    menu.addPreference(
+        'Hide empty categories',
+        () => {
+            this.scene.hideEmptyCategories = !this.scene.hideEmptyCategories;
+            this.createCategories();
+            this.createPaletteHandle();
+            this.fixLayout();
+        },
+        this.scene.hideEmptyCategories,
+        'uncheck to show all primitive block categories',
+        'check to hide empty primitive block categories',
+        false
+    );
+    menu.addLine();
+    menu.addPreference(
+        'Log pen vectors',
+        () => StageMorph.prototype.enablePenLogging =
+            !StageMorph.prototype.enablePenLogging,
+        StageMorph.prototype.enablePenLogging,
+        'uncheck to turn off\nlogging pen vectors',
+        'check to turn on\nlogging pen vectors',
+        false
+    );
+    menu.addPreference(
+        'Codification support',
+        () => {
+            StageMorph.prototype.enableCodeMapping =
+                !StageMorph.prototype.enableCodeMapping;
+            this.flushBlocksCache('variables');
+            this.refreshPalette();
+            this.refreshEmptyCategories();
+        },
+        StageMorph.prototype.enableCodeMapping,
+        'uncheck to disable\nblock to text mapping features',
+        'check for block\nto text mapping features',
+        false
+    );
+    menu.addPreference(
+        'Flat line ends',
+        () => SpriteMorph.prototype.useFlatLineEnds =
+            !SpriteMorph.prototype.useFlatLineEnds,
+        SpriteMorph.prototype.useFlatLineEnds,
+        'uncheck for round ends of lines',
+        'check for flat ends of lines'
+    );
+    menu.addPreference(
+        'Thread safe scripts',
+        () => stage.isThreadSafe = !stage.isThreadSafe,
+        this.stage.isThreadSafe,
+        'uncheck to allow\nscript reentrance',
+        'check to disallow\nscript reentrance'
+    );
+    menu.addPreference(
+        'Enforce input types',
+        () => ScriptsMorph.prototype.enforceTypes =
+            !ScriptsMorph.prototype.enforceTypes,
+        ScriptsMorph.prototype.enforceTypes,
+        'uncheck to allow\ndropping reporters\ninto unmatching slots',
+        'disable dropping reporters\ninto unmatching slots',
+        false
+    );
+    menu.addPreference(
+        'HSL pen color model',
+        () => {
+            SpriteMorph.prototype.penColorModel =
+                SpriteMorph.prototype.penColorModel === 'hsl' ? 'hsv' : 'hsl';
+            this.refreshIDE();
+        },
+        SpriteMorph.prototype.penColorModel === 'hsl',
+        'uncheck to switch pen colors\nand graphic effects to HSV',
+        'check to switch pen colors\nand graphic effects to HSL',
+        false
+    );
+    menu.addPreference(
+        'Disable click-to-run',
+        () => ThreadManager.prototype.disableClickToRun =
+            !ThreadManager.prototype.disableClickToRun,
+        ThreadManager.prototype.disableClickToRun,
+        'uncheck to enable\ndirectly running blocks\nby clicking on them',
+        'check to disable\ndirectly running blocks\nby clicking on them',
+        false
+    );
+    menu.addPreference(
+        'Disable dragging data',
+        () => SpriteMorph.prototype.disableDraggingData =
+            !SpriteMorph.prototype.disableDraggingData,
+        SpriteMorph.prototype.disableDraggingData,
+        'uncheck to drag media\nand blocks out of\nwatchers and balloons',
+        'disable dragging media\nand blocks out of\nwatchers and balloons',
+        false
+    );
+    if (shiftClicked) {
+        menu.addLine();
+    }
+    menu.addPreference(
+        'Inheritance support',
+        () => {
+            StageMorph.prototype.enableInheritance =
+                !StageMorph.prototype.enableInheritance;
+            this.flushBlocksCache('variables');
+            this.refreshPalette();
+            this.refreshEmptyCategories();
+        },
+        StageMorph.prototype.enableInheritance,
+        'uncheck to disable\nsprite inheritance features',
+        'check for sprite\ninheritance features',
+        true
+    );
+    menu.addPreference(
+        'Hyper blocks support',
+        () => Process.prototype.enableHyperOps =
+            !Process.prototype.enableHyperOps,
+        Process.prototype.enableHyperOps,
+        'uncheck to disable\nusing operators on lists and tables',
+        'check to enable\nusing operators on lists and tables',
+        true
+    );
+    menu.addPreference(
+        'Ternary Boolean slots',
+        () => BooleanSlotMorph.prototype.isTernary =
+            !BooleanSlotMorph.prototype.isTernary,
+        BooleanSlotMorph.prototype.isTernary,
+        'uncheck to limit\nBoolean slots to true / false',
+        'check to allow\nempty Boolean slots',
+        true
+    );
+    menu.addPreference(
+        'Persist linked sublist IDs',
+        () => StageMorph.prototype.enableSublistIDs =
+            !StageMorph.prototype.enableSublistIDs,
+        StageMorph.prototype.enableSublistIDs,
+        'uncheck to disable\nsaving linked sublist identities',
+        'check to enable\nsaving linked sublist identities',
+        true
     );
     return menu;
 };
