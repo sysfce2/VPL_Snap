@@ -124,6 +124,7 @@
 
 ### 2026-05-07
 * gui: rearranged settings menu and submenus, thank you, Joan!
+* gui: reaarranged some settings into a new accessibility submenu
 
 ### 2026-05-06
 * optimized layout/composition speed for the shapes library
