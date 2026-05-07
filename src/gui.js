@@ -87,7 +87,7 @@ HatBlockMorph, ZOOM*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.gui = '2026-May-06';
+modules.gui = '2026-May-07';
 
 // Declarations
 
@@ -4611,7 +4611,6 @@ IDE_Morph.prototype.cloudMenu = function () {
 
 IDE_Morph.prototype.settingsMenu = function () {
     var menu,
-        stage = this.stage,
         world = this.world(),
         pos = this.controlBar.settingsButton.bottomLeft(),
         shiftClicked = (world.currentKey === 16),
@@ -8269,13 +8268,9 @@ IDE_Morph.prototype.looksMenu = function () {
 
 IDE_Morph.prototype.projectSettingsMenu = function () {
     var menu = new MenuMorph(this),
+        stage = this.stage,
         world = this.world(),
         shiftClicked = (world.currentKey === 16),
-        tick = new SymbolMorph(
-            'tick',
-            MorphicPreferences.menuFontSize * 0.75
-        ),
-        empty = tick.fullCopy(),
         on = new SymbolMorph(
             'checkedBox',
             MorphicPreferences.menuFontSize * 0.75
@@ -8297,7 +8292,6 @@ IDE_Morph.prototype.projectSettingsMenu = function () {
             );
         }
     };
-    empty.render = nop;
     menu.addItem(
         'Stage size...',
         'userSetStageSize'

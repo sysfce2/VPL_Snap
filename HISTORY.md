@@ -81,7 +81,7 @@
         * added "plus" signs to the buttons in the corral bar to emphasize that a new sprite is created by clicking them
         * flat design mode now (again) supports rounded corners (sigh...)
         * dialog boxes are more bright and their buttons more discernible in bright mode 
-        * rearranged IDE settings menu items into "looks" submenu
+        * rearranged IDE settings menu items into submenus, thank you, Joan!
         * sprite icons no longer blur when the sprite size is reduced or the zoom level increases
         * sprite icons no longer display graphics effects, but the original costume
         * resizing the browser / window in presentation ("app") mode scales the stage smoothly
@@ -121,6 +121,9 @@
     * Chinese, thank you, @Ayist14 !
     * Catalan, thanks, Joan!
     * German
+
+### 2026-05-07
+* gui: rearranged settings menu and submenus, thank you, Joan!
 
 ### 2026-05-06
 * optimized layout/composition speed for the shapes library
