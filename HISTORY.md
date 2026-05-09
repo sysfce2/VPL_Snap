@@ -124,6 +124,7 @@
 
 ### 2026-05-09
 * gui: fixed subpreferences in the project settings menu
+* v12 beta 260509
 
 ### 2026-05-07
 * gui: rearranged settings menu and submenus, thank you, Joan!
