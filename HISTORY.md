@@ -122,6 +122,9 @@
     * Catalan, thanks, Joan!
     * German
 
+### 2026-05-09
+* gui: fixed subpreferences in the project settings menu
+
 ### 2026-05-07
 * gui: rearranged settings menu and submenus, thank you, Joan!
 * gui: reaarranged some settings into a new accessibility submenu

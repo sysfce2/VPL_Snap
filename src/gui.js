@@ -87,7 +87,7 @@ HatBlockMorph, ZOOM*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.gui = '2026-May-07';
+modules.gui = '2026-May-09';
 
 // Declarations
 
@@ -4622,6 +4622,7 @@ IDE_Morph.prototype.settingsMenu = function () {
             'rectangle',
             MorphicPreferences.menuFontSize * 0.75
         );
+
     function addPreference(label, toggle, test, onHint, offHint, hide) {
         if (!hide || shiftClicked) {
             menu.addItem(
@@ -4635,6 +4636,7 @@ IDE_Morph.prototype.settingsMenu = function () {
             );
         }
     }
+
     function addPreferenceMenu(label, test, submenu) {
         menu.addMenu(
             [
@@ -4644,6 +4646,7 @@ IDE_Morph.prototype.settingsMenu = function () {
             submenu
         );
     }
+
     function addSubPreference(label, toggle, test, onHint, offHint, hide) {
         if (!hide || shiftClicked) {
             menu.addItem(
@@ -4657,6 +4660,7 @@ IDE_Morph.prototype.settingsMenu = function () {
             );
         }
     }
+
     menu = new MenuMorph(this);
     menu.addMenu(
         [
@@ -8311,6 +8315,7 @@ IDE_Morph.prototype.projectSettingsMenu = function () {
             'rectangle',
             MorphicPreferences.menuFontSize * 0.75
         );
+
     menu.addPreference = function (label, toggle, test, onHint, offHint, hide) {
         if (!hide || shiftClicked) {
             menu.addItem(
@@ -8324,6 +8329,28 @@ IDE_Morph.prototype.projectSettingsMenu = function () {
             );
         }
     };
+
+    menu.addSubPreference = function (
+        label,
+        toggle,
+        test,
+        onHint,
+        offHint,
+        hide
+    ) {
+        if (!hide || shiftClicked) {
+            menu.addItem(
+                [
+                    (test? on : off),
+                    '  ' + localize(label)
+                ],
+                toggle,
+                test ? onHint : offHint,
+                hide ? new Color(100, 0, 0) : null
+            );
+        }
+    };
+
     menu.addItem(
         'Stage size...',
         'userSetStageSize'
