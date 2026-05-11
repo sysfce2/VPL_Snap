@@ -4689,6 +4689,7 @@ IDE_Morph.prototype.settingsMenu = function () {
         this.accessibilityMenu()
     );
     menu.addLine();
+    menu.addSectionLabel('Temporary Settings');
     addPreference(
         'Turbo mode',
         'toggleFastTracking',
@@ -8230,6 +8231,7 @@ IDE_Morph.prototype.accessibilityMenu = function () {
         'userSetBlocksAfterglow'
     );
     menu.addLine();
+    menu.addSectionLabel('Project Settings');
     menu.addPreference(
         'Enforce input types',
         () => ScriptsMorph.prototype.enforceTypes =
@@ -8258,6 +8260,7 @@ IDE_Morph.prototype.accessibilityMenu = function () {
         false
     );
     menu.addLine();
+    menu.addSectionLabel('Temporary Settings');
     menu.addPreference(
         'Contrast blocks',
         'toggleZebraColoring',

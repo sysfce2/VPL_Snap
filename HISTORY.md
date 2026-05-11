@@ -126,6 +126,8 @@
 * byob, blocks: renamed "ADT" input slot to "custom type", thanks, Michael, for the suggestion!
 * gui: reorganized and extended the settings menu and its submenus, thanks, Joan and Michael!
 * German translation update
+* morphic: new Menu >> addSectionLabel feature
+* gui: added section labels to settings and accessibility menus
 
 ### 2026-05-09
 * gui: fixed subpreferences in the project settings menu
