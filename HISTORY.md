@@ -31,12 +31,12 @@
         * new "Shapes" extension for working with geometrical figures, modeled after Pyret's images. Under construction
     * OOP 2.0 (data objects)
         * "super" calls: using a ring as index inside the "ITEM ... OF ..." reporter answers a copy of the function (ring) that is bound to the list object in the second slot, enabling polymorphic methods, i.e. message dispatches to a "super class"
-    * custom data types (ADTs)
+    * custom data types
         * include a ring entry named underscore + morph in data to specify a dynamic view
-        * new "cst_morph(cst)" extension for specifying custom ADT visualizations
+        * new "cst_morph(cst)" extension for specifying custom data type visualizations
         * include an entry named underscore + field in the data to specify a custom data type
         * integrated type-inferral for user defined data types
-        * new ADT input slot for blocks
+        * new "custom type" input slot for blocks
     * enforcing data types in input slots
         * new optional "reports" type declaration entry for custom reporters
         * new "enforce types" option for all custom blocks: only lets users drop reporters into input slots whose return type matches that of the slot
@@ -121,6 +121,9 @@
     * Chinese, thank you, @Ayist14 !
     * Catalan, thanks, Joan!
     * German
+
+### 2026-05-11
+* byob, blocks: renamed "ADT" input slot to "custom type", thanks, Michael, for the suggestion!
 
 ### 2026-05-09
 * gui: fixed subpreferences in the project settings menu
