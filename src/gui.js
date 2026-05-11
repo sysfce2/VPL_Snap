@@ -87,7 +87,7 @@ HatBlockMorph, ZOOM*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.gui = '2026-May-09';
+modules.gui = '2026-May-11';
 
 // Declarations
 
@@ -4677,12 +4677,16 @@ IDE_Morph.prototype.settingsMenu = function () {
         this.looksMenu()
     );
     menu.addMenu(
-        localize('Accessibility') + '...',
-        this.accessibilityMenu()
+        localize('Editor') + '...',
+        this.ideSettingsMenu()
     );
     menu.addMenu(
-        localize('Project settings') + '...',
+        localize('Project') + '...',
         this.projectSettingsMenu()
+    );
+    menu.addMenu(
+        localize('Accessibility') + '...',
+        this.accessibilityMenu()
     );
     menu.addLine();
     addPreference(
@@ -4776,13 +4780,6 @@ IDE_Morph.prototype.settingsMenu = function () {
         'uncheck to ignore upper- and\n lowercase when comparing texts',
         'check to distinguish upper- and\n lowercase when comparing texts',
         false
-    );
-    addPreference(
-        'Long form input dialog',
-        'toggleLongFormInputDialog',
-        InputSlotDialogMorph.prototype.isLaunchingExpanded,
-        'uncheck to use the input\ndialog in short form',
-        'check to always show slot\ntypes in the input dialog'
     );
     menu.addMenu(
         'Microphone resolution...',
@@ -8161,6 +8158,167 @@ IDE_Morph.prototype.looksMenu = function () {
         'check to use blurred drop\nshadows and highlights',
         true
     );
+    return menu;
+};
+
+IDE_Morph.prototype.accessibilityMenu = function () {
+    var menu = new MenuMorph(this),
+        world = this.world(),
+        shiftClicked = (world.currentKey === 16),
+        on = new SymbolMorph(
+            'checkedBox',
+            MorphicPreferences.menuFontSize * 0.75
+        ),
+        off = new SymbolMorph(
+            'rectangle',
+            MorphicPreferences.menuFontSize * 0.75
+        );
+
+    menu.addPreference = function (label, toggle, test, onHint, offHint, hide) {
+        if (!hide || shiftClicked) {
+            menu.addItem(
+                [
+                    (test? on : off),
+                    localize(label)
+                ],
+                toggle,
+                test ? onHint : offHint,
+                hide ? new Color(100, 0, 0) : null
+            );
+        }
+    };
+
+    menu.addPreference(
+        'Keyboard Editing',
+        () => {
+            ScriptsMorph.prototype.enableKeyboard =
+                !ScriptsMorph.prototype.enableKeyboard;
+            this.currentSprite.scripts.updateToolbar();
+            if (ScriptsMorph.prototype.enableKeyboard) {
+                this.removeSetting('keyboard');
+            } else {
+                this.saveSetting('keyboard', false);
+            }
+        },
+        ScriptsMorph.prototype.enableKeyboard,
+        'uncheck to disable\nkeyboard editing support',
+        'check to enable\nkeyboard editing support',
+        false
+    );
+    menu.addPreference(
+        'Clicking sound',
+        () => {
+            BlockMorph.prototype.toggleSnapSound();
+            if (BlockMorph.prototype.snapSound) {
+                this.saveSetting('click', true);
+            } else {
+                this.removeSetting('click');
+            }
+        },
+        BlockMorph.prototype.snapSound,
+        'uncheck to turn\nblock clicking\nsound off',
+        'check to turn\nblock clicking\nsound on'
+    );
+    menu.addItem(localize(
+        'Magnification') + '...',
+        'userZoom'
+    );
+    menu.addItem('Zoom blocks...', 'userSetBlocksScale');
+    menu.addItem('Fade blocks...', 'userFadeBlocks');
+    menu.addItem(
+        'Afterglow blocks...',
+        'userSetBlocksAfterglow'
+    );
+    menu.addLine();
+    menu.addPreference(
+        'Contrast Blocks',
+        'toggleZebraColoring',
+        BlockMorph.prototype.zebraContrast,
+        'uncheck to disable alternating\ncolors for nested block',
+        'check to enable alternating\ncolors for nested blocks',
+        false
+    );
+    menu.addItem(
+        'Dragging threshold...',
+        'userSetDragThreshold',
+        'specify the distance the hand has to move\n' +
+            'before it picks up an object'
+    );
+    return menu;
+};
+
+IDE_Morph.prototype.ideSettingsMenu = function () {
+    var menu = new MenuMorph(this),
+        world = this.world(),
+        shiftClicked = (world.currentKey === 16),
+        on = new SymbolMorph(
+            'checkedBox',
+            MorphicPreferences.menuFontSize * 0.75
+        ),
+        off = new SymbolMorph(
+            'rectangle',
+            MorphicPreferences.menuFontSize * 0.75
+        );
+
+    menu.addPreference = function (label, toggle, test, onHint, offHint, hide) {
+        if (!hide || shiftClicked) {
+            menu.addItem(
+                [
+                    (test? on : off),
+                    localize(label)
+                ],
+                toggle,
+                test ? onHint : offHint,
+                hide ? new Color(100, 0, 0) : null
+            );
+        }
+    };
+
+    menu.addPreference(
+        'Keyboard Editing',
+        () => {
+            ScriptsMorph.prototype.enableKeyboard =
+                !ScriptsMorph.prototype.enableKeyboard;
+            this.currentSprite.scripts.updateToolbar();
+            if (ScriptsMorph.prototype.enableKeyboard) {
+                this.removeSetting('keyboard');
+            } else {
+                this.saveSetting('keyboard', false);
+            }
+        },
+        ScriptsMorph.prototype.enableKeyboard,
+        'uncheck to disable\nkeyboard editing support',
+        'check to enable\nkeyboard editing support',
+        false
+    );
+    menu.addPreference(
+        'Clicking sound',
+        () => {
+            BlockMorph.prototype.toggleSnapSound();
+            if (BlockMorph.prototype.snapSound) {
+                this.saveSetting('click', true);
+            } else {
+                this.removeSetting('click');
+            }
+        },
+        BlockMorph.prototype.snapSound,
+        'uncheck to turn\nblock clicking\nsound off',
+        'check to turn\nblock clicking\nsound on'
+    );
+    menu.addPreference(
+        'Long form input dialog',
+        'toggleLongFormInputDialog',
+        InputSlotDialogMorph.prototype.isLaunchingExpanded,
+        'uncheck to use the input\ndialog in short form',
+        'check to always show slot\ntypes in the input dialog'
+    );
+    menu.addItem(
+        'Afterglow blocks...',
+        'userSetBlocksAfterglow'
+    );
+    if (shiftClicked) {
+        menu.addLine();
+    }
     menu.addPreference(
         'Nested auto-wrapping',
         () => {
@@ -8222,85 +8380,6 @@ IDE_Morph.prototype.looksMenu = function () {
     return menu;
 };
 
-IDE_Morph.prototype.accessibilityMenu = function () {
-    var menu = new MenuMorph(this),
-        world = this.world(),
-        shiftClicked = (world.currentKey === 16),
-        on = new SymbolMorph(
-            'checkedBox',
-            MorphicPreferences.menuFontSize * 0.75
-        ),
-        off = new SymbolMorph(
-            'rectangle',
-            MorphicPreferences.menuFontSize * 0.75
-        );
-
-    menu.addPreference = function (label, toggle, test, onHint, offHint, hide) {
-        if (!hide || shiftClicked) {
-            menu.addItem(
-                [
-                    (test? on : off),
-                    localize(label)
-                ],
-                toggle,
-                test ? onHint : offHint,
-                hide ? new Color(100, 0, 0) : null
-            );
-        }
-    };
-
-    menu.addPreference(
-        'Keyboard Editing',
-        () => {
-            ScriptsMorph.prototype.enableKeyboard =
-                !ScriptsMorph.prototype.enableKeyboard;
-            this.currentSprite.scripts.updateToolbar();
-            if (ScriptsMorph.prototype.enableKeyboard) {
-                this.removeSetting('keyboard');
-            } else {
-                this.saveSetting('keyboard', false);
-            }
-        },
-        ScriptsMorph.prototype.enableKeyboard,
-        'uncheck to disable\nkeyboard editing support',
-        'check to enable\nkeyboard editing support',
-        false
-    );
-    menu.addPreference(
-        'Contrast Blocks',
-        'toggleZebraColoring',
-        BlockMorph.prototype.zebraContrast,
-        'uncheck to disable alternating\ncolors for nested block',
-        'check to enable alternating\ncolors for nested blocks',
-        false
-    );
-    menu.addPreference(
-        'Clicking sound',
-        () => {
-            BlockMorph.prototype.toggleSnapSound();
-            if (BlockMorph.prototype.snapSound) {
-                this.saveSetting('click', true);
-            } else {
-                this.removeSetting('click');
-            }
-        },
-        BlockMorph.prototype.snapSound,
-        'uncheck to turn\nblock clicking\nsound off',
-        'check to turn\nblock clicking\nsound on'
-    );
-    menu.addLine();
-    menu.addItem(
-        'Dragging threshold...',
-        'userSetDragThreshold',
-        'specify the distance the hand has to move\n' +
-            'before it picks up an object'
-    );
-    menu.addItem(
-        'Afterglow blocks...',
-        'userSetBlocksAfterglow'
-    );
-    return menu;
-};
 
 IDE_Morph.prototype.projectSettingsMenu = function () {
     var menu = new MenuMorph(this),
