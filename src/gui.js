@@ -8231,6 +8231,34 @@ IDE_Morph.prototype.accessibilityMenu = function () {
     );
     menu.addLine();
     menu.addPreference(
+        'Enforce input types',
+        () => ScriptsMorph.prototype.enforceTypes =
+            !ScriptsMorph.prototype.enforceTypes,
+        ScriptsMorph.prototype.enforceTypes,
+        'uncheck to allow\ndropping reporters\ninto unmatching slots',
+        'disable dropping reporters\ninto unmatching slots',
+        false
+    );
+    menu.addPreference(
+        'Disable click-to-run',
+        () => ThreadManager.prototype.disableClickToRun =
+            !ThreadManager.prototype.disableClickToRun,
+        ThreadManager.prototype.disableClickToRun,
+        'uncheck to enable\ndirectly running blocks\nby clicking on them',
+        'check to disable\ndirectly running blocks\nby clicking on them',
+        false
+    );
+    menu.addPreference(
+        'Disable dragging data',
+        () => SpriteMorph.prototype.disableDraggingData =
+            !SpriteMorph.prototype.disableDraggingData,
+        SpriteMorph.prototype.disableDraggingData,
+        'uncheck to drag media\nand blocks out of\nwatchers and balloons',
+        'disable dragging media\nand blocks out of\nwatchers and balloons',
+        false
+    );
+    menu.addLine();
+    menu.addPreference(
         'Contrast blocks',
         'toggleZebraColoring',
         BlockMorph.prototype.zebraContrast,
