@@ -128,6 +128,7 @@
 * German translation update
 * morphic: new Menu >> addSectionLabel feature
 * gui: added section labels to settings and accessibility menus
+* v12 beta 260511
 
 ### 2026-05-09
 * gui: fixed subpreferences in the project settings menu
