@@ -125,6 +125,7 @@
 ### 2026-05-11
 * byob, blocks: renamed "ADT" input slot to "custom type", thanks, Michael, for the suggestion!
 * gui: reorganized and extended the settings menu and its submenus, thanks, Joan and Michael!
+* German translation update
 
 ### 2026-05-09
 * gui: fixed subpreferences in the project settings menu

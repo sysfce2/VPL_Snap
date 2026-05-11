@@ -8189,7 +8189,7 @@ IDE_Morph.prototype.accessibilityMenu = function () {
     };
 
     menu.addPreference(
-        'Keyboard Editing',
+        'Keyboard editing',
         () => {
             ScriptsMorph.prototype.enableKeyboard =
                 !ScriptsMorph.prototype.enableKeyboard;
@@ -8231,7 +8231,7 @@ IDE_Morph.prototype.accessibilityMenu = function () {
     );
     menu.addLine();
     menu.addPreference(
-        'Contrast Blocks',
+        'Contrast blocks',
         'toggleZebraColoring',
         BlockMorph.prototype.zebraContrast,
         'uncheck to disable alternating\ncolors for nested block',
@@ -8239,7 +8239,7 @@ IDE_Morph.prototype.accessibilityMenu = function () {
         false
     );
     menu.addItem(
-        'Dragging threshold...',
+        localize('Dragging threshold') + '...',
         'userSetDragThreshold',
         'specify the distance the hand has to move\n' +
             'before it picks up an object'
@@ -8275,7 +8275,7 @@ IDE_Morph.prototype.ideSettingsMenu = function () {
     };
 
     menu.addPreference(
-        'Keyboard Editing',
+        'Keyboard editing',
         () => {
             ScriptsMorph.prototype.enableKeyboard =
                 !ScriptsMorph.prototype.enableKeyboard;
