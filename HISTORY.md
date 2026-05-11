@@ -129,6 +129,7 @@
 * morphic: new Menu >> addSectionLabel feature
 * gui: added section labels to settings and accessibility menus
 * v12 beta 260511
+* threads: tweaked getObject accessors to guard against null references
 
 ### 2026-05-09
 * gui: fixed subpreferences in the project settings menu

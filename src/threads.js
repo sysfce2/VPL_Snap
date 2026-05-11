@@ -66,7 +66,7 @@ CustomHatBlockMorph*/
 
 /*jshint esversion: 11, bitwise: false, evil: true*/
 
-modules.threads = '2026-April-07';
+modules.threads = '2026-May-11';
 
 var ThreadManager;
 var Process;
@@ -7271,7 +7271,7 @@ Process.prototype.reportBasicAttributeOf = function (attribute, name) {
         stage = thisObj.parentThatIsA(StageMorph);
         if (name instanceof Context) {
             thatObj = name;
-        } else if (stage.name === name) {
+        } else if (stage?.name === name) {
             thatObj = stage;
         } else {
             thatObj = this.getOtherObject(name, thisObj, stage);
@@ -7570,7 +7570,7 @@ Process.prototype.reportObject = function (name) {
     if (thisObj) {
         this.assertAlive(thisObj);
         stage = thisObj.parentThatIsA(StageMorph);
-        if (snapEquals(stage.name, name)) {
+        if (snapEquals(stage?.name, name)) {
             thatObj = stage;
         } else {
             thatObj = this.getOtherObject(name, thisObj, stage);
