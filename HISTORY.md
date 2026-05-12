@@ -125,6 +125,7 @@
 ### 2026-05-12
 * gui: double-localized 'language' + ellipsis to keep existing settings menu translations from breaking
 * added support for a locally managed Matomo instance, thank you, Michael!.
+* v12 beta 260512
 
 ### 2026-05-11
 * byob, blocks: renamed "ADT" input slot to "custom type", thanks, Michael, for the suggestion!
