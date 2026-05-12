@@ -87,7 +87,7 @@ HatBlockMorph, ZOOM*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.gui = '2026-May-11';
+modules.gui = '2026-May-12';
 
 // Declarations
 
@@ -4668,7 +4668,7 @@ IDE_Morph.prototype.settingsMenu = function () {
                 'globe',
                 MorphicPreferences.menuFontSize
             ),
-            localize('Language') + '...'
+            localize(localize('Language') + '...') // I know...
         ],
         this.languageMenu()
     );

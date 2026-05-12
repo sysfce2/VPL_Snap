@@ -122,6 +122,9 @@
     * Catalan, thanks, Joan!
     * German
 
+### 2026-05-12
+* gui: double-localized 'language' + ellipsis to keep existing settings menu translations from breaking
+
 ### 2026-05-11
 * byob, blocks: renamed "ADT" input slot to "custom type", thanks, Michael, for the suggestion!
 * gui: reorganized and extended the settings menu and its submenus, thanks, Joan and Michael!
