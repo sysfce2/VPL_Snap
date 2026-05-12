@@ -4668,7 +4668,7 @@ IDE_Morph.prototype.settingsMenu = function () {
                 'globe',
                 MorphicPreferences.menuFontSize
             ),
-            localize(localize('Language') + '...') // I know...
+            localize('Language') + '...'
         ],
         this.languageMenu()
     );
