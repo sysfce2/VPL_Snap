@@ -123,7 +123,6 @@
     * German
 
 ### 2026-05-12
-* gui: double-localized 'language' + ellipsis to keep existing settings menu translations from breaking
 * added support for a locally managed Matomo instance, thank you, Michael!.
 * v12 beta 260512
 
