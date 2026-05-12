@@ -7,7 +7,7 @@
     written by Jens Mönig
     jens@moenig.org
 
-    Copyright (C) 2024 by Jens Mönig
+    Copyright (C) 2026 by Jens Mönig
 
     This file is part of Snap!.
 
@@ -47,13 +47,14 @@
 */
 
 /*global modules, VariableFrame, StageMorph, SpriteMorph, Process, List,
-normalizeCanvas, SnapSerializer, Costume, ThreadManager, IDE_Morph*/
+normalizeCanvas, SnapSerializer, Costume, ThreadManager, IDE_Morph,
+ScriptsMorph*/
 
 /*jshint esversion: 6*/
 
 // Global stuff ////////////////////////////////////////////////////////
 
-modules.scenes = '2024-May-28';
+modules.scenes = '2026-April-15';
 
 // Projecct /////////////////////////////////////////////////////////
 
@@ -62,7 +63,7 @@ modules.scenes = '2024-May-28';
 
 // Project instance creation:
 
-function Project(scenes, current) {
+function Project(scenes, current, temporary = false) {
     var projectScene;
 
     this.scenes = scenes || new List();
@@ -87,6 +88,9 @@ function Project(scenes, current) {
 
     // for undeleting scenes - do not persist
     this.trash = [];
+
+    // for refreshing the ide
+    this.isTemporary = temporary;
 }
 
 Project.prototype.initialize = function () {
@@ -120,7 +124,24 @@ function Scene(aStageMorph) {
     this.hasUnsavedEdits = false;
     this.unifiedPalette = false;
     this.showCategories = true;
+    this.hideEmptyCategories = false;
     this.showPaletteButtons = true;
+    this.role = null; // null (default), "template" or "tutorial"
+    this.createdFromTemplate = false;
+    this.hideSprites = false;
+
+    // template settings
+    this.template = {
+        name: null,
+        version: null,
+        hide: null,
+        lang: undefined,
+        zoom: undefined,
+        scale: undefined,
+        fade: undefined,
+        flat: undefined,
+        bright: undefined
+    };
 
     // cached IDE state
     this.sprites = new List();
@@ -143,7 +164,8 @@ function Scene(aStageMorph) {
     this.enableHyperOps = true;
     this.disableClickToRun = false;
     this.disableDraggingData = false;
-    this.penColorModel = 'hsv'; // can also bei 'hsl'
+    this.penColorModel = 'hsv'; // can also be 'hsl'
+    this.enforceTypes = false;
 
     // for deserializing - do not persist
     this.spritesDict = {};
@@ -204,6 +226,7 @@ Scene.prototype.captureGlobalSettings = function () {
     this.disableDraggingData = SpriteMorph.prototype.disableDraggingData;
     this.penColorModel = SpriteMorph.prototype.penColorModel;
     this.blocks = SpriteMorph.prototype.blocks;
+    this.enforceTypes = ScriptsMorph.prototype.enforceTypes;
 };
 
 Scene.prototype.applyGlobalSettings = function () {
@@ -223,6 +246,14 @@ Scene.prototype.applyGlobalSettings = function () {
     SpriteMorph.prototype.disableDraggingData = this.disableDraggingData;
     SpriteMorph.prototype.penColorModel = this.penColorModel;
     SpriteMorph.prototype.blocks = this.blocks;
+    ScriptsMorph.prototype.enforceTypes = this.enforceTypes;
+};
+
+// Scene embedded template settings
+
+Scene.prototype.hasEmbeddedTemplateSettings = function () {
+    return ['lang', 'zoom', 'scale', 'fade', 'flat', 'bright'].some(any =>
+        this.template[any] !== undefined);
 };
 
 // Scene ops:
