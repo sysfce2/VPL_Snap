@@ -1,5 +1,10 @@
 /*global self, caches*/
 /*jshint esversion: 6*/
+let cacheBuster = '';
+if (self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1') {
+    // Prevent caching during development
+    cacheBuster = Date.now();
+}
 var snapVersion = '12-beta-260511',
     cacheName = `snap-pwa-${snapVersion}`,
     filesToCache = [
