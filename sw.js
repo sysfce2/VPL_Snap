@@ -1,7 +1,9 @@
 /*global self, caches*/
 /*jshint esversion: 6*/
 let cacheBuster = '';
-if (self.location.hostname === 'localhost' || self.location.hostname === '127.0.0.1') {
+if (self.location.hostname === 'localhost' ||
+    self.location.hostname === '127.0.0.1'
+) {
     // Prevent caching during development
     cacheBuster = Date.now();
 }
