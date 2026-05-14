@@ -122,6 +122,9 @@
     * Catalan, thanks, Joan!
     * German
 
+### 2026-05-14
+* threads: fixed testing for hierarchical custom types
+
 ### 2026-05-12
 * added support for a locally managed Matomo instance, thank you, Michael!.
 * v12 beta 260512
