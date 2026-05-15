@@ -96,7 +96,7 @@ CustomBlockDefinition, exportEmbroidery, CustomHatBlockMorph, HandMorph*/
 
 /*jshint esversion: 11*/
 
-modules.objects = '2026-April-29';
+modules.objects = '2026-May-15';
 
 var SpriteMorph;
 var StageMorph;
@@ -6910,15 +6910,21 @@ SpriteMorph.prototype.writeOn = function (target, text, size) {
     // determine the relative coordinates, rotation and font size
     start = target.costumePoint(this.rotationCenter());
     // fontSize = size;
-    fontSize = +(size.toString().split('px')[0]); // support decorations
-    decorations = (size.toString().split('px')[1]) || '';
+    decorations = size.toString().split(' ');
+    fontSize = (decorations.length > 1) ?
+        parseFloat(decorations[decorations.length - 2])
+        : +size;
     rotation = radians(this.direction() - 90);
     if (target instanceof SpriteMorph) {
         fontSize /= target.scale;
         rotation -= radians(target.direction() - 90);
     }
-    if (decorations !== '') {
-        fontSize = fontSize + 'px' + decorations;
+    if (decorations.length > 1) { // try supporting decorations
+        fontSize = decorations.slice(0, decorations.length - 2)
+            .reduce(
+                (a, b) => a + ' ' + b,
+                ''
+            ) + ' ' + fontSize + 'px ' + decorations[decorations.length - 1];
     }
 
     // write the text on the target canvas

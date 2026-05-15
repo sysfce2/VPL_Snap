@@ -122,6 +122,9 @@
     * Catalan, thanks, Joan!
     * German
 
+### 2026-05-15
+* objects: another attempt at supporting fancy text writing when overdrawing a sprite
+
 ### 2026-05-14
 * threads: fixed testing for hierarchical custom types
 * updated all selection menu translations, thank you, Joan!
