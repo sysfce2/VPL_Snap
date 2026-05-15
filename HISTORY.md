@@ -124,6 +124,7 @@
 
 ### 2026-05-15
 * objects: another attempt at supporting fancy text writing when overdrawing a sprite
+* v12 beta 260515
 
 ### 2026-05-14
 * threads: fixed testing for hierarchical custom types
